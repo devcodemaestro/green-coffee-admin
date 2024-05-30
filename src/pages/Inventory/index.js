@@ -32,7 +32,10 @@ function Inventory() {
           {
             title: <div style={{ textAlign: "center" }}>가격</div>,
             dataIndex: "price",
-            render: (value) => <span>{value}원</span>,
+            render: (value) => (
+              <span>{Math.floor(Number(value)).toLocaleString("ko-KR")}원</span>
+            ),
+            align: "right",
           },
           {
             title: <div style={{ textAlign: "center" }}>추천</div>,

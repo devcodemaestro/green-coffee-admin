@@ -100,7 +100,6 @@ function Dashboard() {
     </Space>
   );
 }
-// 52:!7
 const DashboardCard = ({ icon, title, value }) => {
   return (
     <Card>
