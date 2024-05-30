@@ -5,18 +5,18 @@ import {
   UserOutlined,
 } from "@ant-design/icons/lib";
 import { Card, Space, Statistic, Table, Typography } from "antd/es";
-import { useEffect, useState } from "react";
-import { getOrders, getRevenue } from "../../api";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
   BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
+import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import { getDashBoardOrders, getRevenue } from "../../api";
 
 ChartJS.register(
   CategoryScale,
@@ -117,7 +117,7 @@ const RecentOrders = () => {
 
   useEffect(() => {
     setLoading(true);
-    getOrders(setDataSource);
+    getDashBoardOrders(setDataSource);
     setLoading(false);
   }, []);
 

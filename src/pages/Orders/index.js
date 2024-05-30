@@ -1,4 +1,4 @@
-import { Avatar, Rate, Space, Table, Typography } from "antd/es";
+import { Rate, Space, Table, Typography } from "antd/es";
 import { useEffect, useState } from "react";
 import { getOrders } from "../../api";
 
@@ -11,7 +11,7 @@ function Orders() {
     getOrders(setDataSource);
     setLoading(false);
   }, []);
-
+  console.log("dataSoure", dataSoure);
   return (
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>주문관리</Typography.Title>
@@ -23,10 +23,10 @@ function Orders() {
             dataIndex: "title",
           },
           {
-            title: <div style={{ textAlign: "center" }}>할인금액</div>,
-            dataIndex: "discountedTotal",
+            title: <div style={{ textAlign: "center" }}>할인율</div>,
+            dataIndex: "discountPercentage",
             render: (value) => (
-              <span>{Math.floor(Number(value)).toLocaleString("ko-KR")}원</span>
+              <span>{Math.floor(Number(value)).toLocaleString("ko-KR")}%</span>
             ),
             align: "right",
           },
@@ -40,17 +40,15 @@ function Orders() {
           },
           {
             title: <div style={{ textAlign: "center" }}>수량</div>,
-            dataIndex: "quantity",
+            dataIndex: "minimumOrderQuantity",
           },
           {
-            title: <div style={{ textAlign: "center" }}>최종금액</div>,
-            dataIndex: "total",
-            render: (value) => (
-              <span>{Math.floor(Number(value)).toLocaleString("ko-KR")}원</span>
-            ),
-            align: "right",
+            title: <div style={{ textAlign: "center" }}>추천</div>,
+            dataIndex: "rating",
+            render: (rating) => {
+              return <Rate value={rating} allowHalf disabled />;
+            },
           },
-
           {
             title: <div style={{ textAlign: "center" }}>카테고리</div>,
             dataIndex: "category",

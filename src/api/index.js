@@ -1,10 +1,20 @@
 import axios from "axios";
 
-export const getOrders = async (setDataSource) => {
+export const getDashBoardOrders = async (setDataSource) => {
   try {
     const res = await axios.get("https://dummyjson.com/carts/1");
     console.log("res", res.data);
     return setDataSource(res.data.products.splice(0, 3));
+  } catch (err) {
+    console.error("다음과 같은 에러가 발생했습니다 :", err);
+  }
+};
+
+export const getOrders = async (setDataSource) => {
+  try {
+    const res = await axios.get("https://dummyjson.com/products");
+    console.log("res", res.data);
+    return setDataSource(res.data.products);
   } catch (err) {
     console.error("다음과 같은 에러가 발생했습니다 :", err);
   }
@@ -45,8 +55,8 @@ export const getInventory = async (setDataSource) => {
 
 export const getCustomers = async (setDataSource) => {
   try {
-    const res = await axios.get("https://dummyjson.com/products");
-    setDataSource(res.data.products);
+    const res = await axios.get("https://dummyjson.com/users");
+    setDataSource(res.data.users);
   } catch (err) {
     console.error("다음과 같은 에러가 발생했습니다 :", err);
   }
