@@ -33,3 +33,12 @@ export const getRevenue = async (setRevenueData) => {
     console.error("다음과 같은 에러가 발생했습니다 :", err);
   }
 };
+
+export const getInventory = async (setDataSource) => {
+  try {
+    const res = await axios.get("https://dummyjson.com/products");
+    setDataSource(res.data.products);
+  } catch (err) {
+    console.error("다음과 같은 에러가 발생했습니다 :", err);
+  }
+};
