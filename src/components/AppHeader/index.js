@@ -1,8 +1,18 @@
 import { BellFilled, MailOutlined } from "@ant-design/icons/lib";
-import { Badge, Image, Space, Typography } from "antd/es";
-import React from "react";
+import { Badge, Drawer, Image, List, Space, Typography } from "antd/es";
+import React, { useEffect, useState } from "react";
+import { getHeaderComments, getHeaderOrders } from "../../api";
 
 const AppHeader = () => {
+  const [comments, setComments] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  useEffect(() => {
+    getHeaderComments(setComments);
+    getHeaderOrders(setOrders);
+  }, []);
   return (
     <div className="AppHeader">
       <Image
@@ -19,14 +29,58 @@ const AppHeader = () => {
         Green Coffee's AdminPage
       </Typography.Title>
       <Space>
-        {/* 미확인 숫자 아이콘 표기. 속성값으로 dot이 들어가면 갯수 표기 안됨 */}
-        <Badge count={10} dot>
-          <MailOutlined style={{ fontSize: 24 }} />
+        <Badge count={comments.length}>
+          <MailOutlined
+            style={{ fontSize: 24 }}
+            onClick={() => {
+              setCommentsOpen(true);
+            }}
+          />
         </Badge>
-        <Badge count={20}>
-          <BellFilled style={{ fontSize: 24 }} />
+        <Badge count={orders.length}>
+          <BellFilled
+            style={{ fontSize: 24 }}
+            onClick={() => {
+              setNotificationsOpen(true);
+            }}
+          />
         </Badge>
       </Space>
+      <Drawer
+        title="Comments"
+        open={commentsOpen}
+        onClose={() => {
+          setCommentsOpen(false);
+        }}
+        maskClosable
+      >
+        <List
+          dataSource={comments}
+          renderItem={(item) => {
+            return <List.Item>{item.body}</List.Item>;
+          }}
+        ></List>
+      </Drawer>
+      <Drawer
+        title="Notifications"
+        open={notificationsOpen}
+        onClose={() => {
+          setNotificationsOpen(false);
+        }}
+        maskClosable
+      >
+        <List
+          dataSource={orders}
+          renderItem={(item) => {
+            return (
+              <List.Item>
+                <Typography.Paragraph strong>{item.title}</Typography.Paragraph>
+                주문승인
+              </List.Item>
+            );
+          }}
+        ></List>
+      </Drawer>
     </div>
   );
 };

@@ -6,17 +6,29 @@ import {
   UserOutlined,
 } from "@ant-design/icons/lib";
 import { Menu } from "antd/es";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom/dist";
 
 const SideMenu = () => {
+  const location = useLocation();
+  const [selectedKeys, setSelectedKeys] = useState(`/`);
+
+  useEffect(() => {
+    const pathName = location.pathname;
+    setSelectedKeys(pathName);
+  }, [location.pathname]);
+
   const navigate = useNavigate();
   return (
     <div className="SideMenu">
       <Menu
+        className="SideMenuVertical"
+        mode="vertical"
         onClick={(item) => {
           navigate(item.key);
         }}
+        selectedKeys={[selectedKeys]}
         items={[
           {
             label: "대시보드",

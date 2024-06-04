@@ -1,22 +1,29 @@
+import React, { useEffect, useState } from "react";
+import { Space, Typography, Card, Statistic, Table } from "antd";
 import {
   DollarOutlined,
   ShoppingCartOutlined,
   ShoppingOutlined,
   UserOutlined,
-} from "@ant-design/icons/lib";
-import { Card, Space, Statistic, Table, Typography } from "antd/es";
+} from "@ant-design/icons";
 import {
-  BarElement,
-  CategoryScale,
+  getDashBoardOrders,
+  getDashboardCustomers,
+  getDashboardInventory,
+  getDashboardRevenue,
+  getOrders,
+  getRevenue,
+} from "../../api";
+import { Bar } from "react-chartjs-2";
+import {
   Chart as ChartJS,
-  Legend,
+  CategoryScale,
   LinearScale,
+  BarElement,
   Title,
   Tooltip,
+  Legend,
 } from "chart.js";
-import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
-import { getDashBoardOrders, getRevenue } from "../../api";
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +34,19 @@ ChartJS.register(
   Legend
 );
 
-function Dashboard() {
+const Dashboard = () => {
+  const [orders, setOrders] = useState(0);
+  const [inventory, setInventory] = useState(0);
+  const [customers, setCustomers] = useState(0);
+  const [revenue, setRevenue] = useState(0);
+
+  useEffect(() => {
+    getDashBoardOrders(setOrders);
+    getDashboardRevenue(setRevenue);
+    getDashboardInventory(setInventory);
+    getDashboardCustomers(setCustomers);
+  }, []);
+
   return (
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>대시보드</Typography.Title>
@@ -35,62 +54,38 @@ function Dashboard() {
         <DashboardCard
           icon={
             <ShoppingCartOutlined
-              style={{
-                color: "#BF8A30",
-                backgroundColor: "rgba(191,138,48,0.25)",
-                borderRadius: 10,
-                fontSize: 24,
-                padding: 8,
-              }}
+              style={iconStyle("#BF8A30", "rgba(191,138,48,0.25)")}
             />
           }
           title={"일 주문"}
-          value={1234}
+          value={orders}
         />
         <DashboardCard
           icon={
             <ShoppingOutlined
-              style={{
-                color: "#6A1B1B",
-                backgroundColor: "rgba(106,27,27,0.25)",
-                borderRadius: 10,
-                fontSize: 24,
-                padding: 8,
-              }}
+              style={iconStyle("#6A1B1B", "rgba(106,27,27,0.25)")}
             />
           }
           title={"메뉴관리"}
-          value={1234}
+          value={inventory}
         />
         <DashboardCard
           icon={
             <UserOutlined
-              style={{
-                color: "#009E73",
-                backgroundColor: "rgba(0,158,115,0.25)",
-                borderRadius: 10,
-                fontSize: 24,
-                padding: 8,
-              }}
+              style={iconStyle("#009E73", "rgba(0,158,115,0.25)")}
             />
           }
           title={"일 방문"}
-          value={1234}
+          value={customers}
         />
         <DashboardCard
           icon={
             <DollarOutlined
-              style={{
-                color: "#EB5757",
-                backgroundColor: "rgba(255,36,0,0.25)",
-                borderRadius: 10,
-                fontSize: 20,
-                padding: 8,
-              }}
+              style={iconStyle("#EB5757", "rgba(255,36,0,0.25)")}
             />
           }
           title={"일 매출"}
-          value={1234}
+          value={revenue}
         />
       </Space>
       <Space>
@@ -99,17 +94,24 @@ function Dashboard() {
       </Space>
     </Space>
   );
-}
-const DashboardCard = ({ icon, title, value }) => {
-  return (
-    <Card>
-      <Space direction="horizontal">
-        {icon}
-        <Statistic title={title} value={value} />
-      </Space>
-    </Card>
-  );
 };
+
+const iconStyle = (color, bgColor) => ({
+  color,
+  backgroundColor: bgColor,
+  borderRadius: 10,
+  fontSize: 24,
+  padding: 8,
+});
+
+const DashboardCard = ({ icon, title, value }) => (
+  <Card>
+    <Space direction="horizontal">
+      {icon}
+      <Statistic title={title} value={value} />
+    </Space>
+  </Card>
+);
 
 const RecentOrders = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -117,7 +119,7 @@ const RecentOrders = () => {
 
   useEffect(() => {
     setLoading(true);
-    getDashBoardOrders(setDataSource);
+    getOrders(setDataSource);
     setLoading(false);
   }, []);
 
@@ -147,12 +149,12 @@ const RecentOrders = () => {
         loading={loading}
         dataSource={dataSource}
         pagination={false}
-      ></Table>
+      />
     </>
   );
 };
 
-function DashboardChart() {
+const DashboardChart = () => {
   const [revenueData, setRevenueData] = useState({ labels: [], datasets: [] });
   const [loading, setLoading] = useState(false);
 
@@ -164,27 +166,12 @@ function DashboardChart() {
 
   const options = {
     plugins: {
-      legend: {
-        position: "bottom",
-      },
-      title: {
-        display: true,
-        text: "월별 수익",
-      },
+      legend: { position: "bottom" },
+      title: { display: true, text: "월별 수익" },
     },
     responsive: true,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true,
-      },
-    },
+    interaction: { mode: "index", intersect: false },
+    scales: { x: { stacked: true }, y: { stacked: true } },
   };
 
   return (
@@ -192,6 +179,6 @@ function DashboardChart() {
       <Bar options={options} data={revenueData} />
     </Card>
   );
-}
+};
 
 export default Dashboard;
