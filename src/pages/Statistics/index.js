@@ -7,9 +7,12 @@ import {
   LinearScale,
   Title,
   Tooltip,
+  PointElement,
+  LineElement,
+  ArcElement,
 } from "chart.js";
 import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line, Pie } from "react-chartjs-2";
 import { getRevenue, getVertical } from "../../api";
 
 ChartJS.register(
@@ -18,7 +21,10 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  PointElement,
+  LineElement,
+  ArcElement
 );
 
 function Statistics() {
@@ -26,23 +32,12 @@ function Statistics() {
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>통계자료</Typography.Title>
       <Space direction="horizontal">
-        <RevenueChart />
-        <RevenueChart />
+        <VerticalChart />
+        <LineChart />
       </Space>
       <Space direction="horizontal">
-        <RevenueChart />
-        <RevenueChart />
-      </Space>
-      <Space>
-        <Card>
-          <VerticalBarChart />
-        </Card>
-        <Card>
-          <VerticalBarChart />
-        </Card>
-        <Card>
-          <VerticalBarChart />
-        </Card>
+        <PieChart />
+        <HorizontalChart />
       </Space>
     </Space>
   );
@@ -99,7 +94,7 @@ function Statistics() {
 //   );
 // };
 
-function RevenueChart() {
+function VerticalChart() {
   const [revenueData, setRevenueData] = useState({ labels: [], datasets: [] });
   const [loading, setLoading] = useState(false);
 
@@ -116,7 +111,8 @@ function RevenueChart() {
       },
       title: {
         display: true,
-        text: "월별 수익",
+        text: "매출, 방문자수",
+        padding: 0,
       },
     },
     responsive: true,
@@ -141,7 +137,7 @@ function RevenueChart() {
   );
 }
 
-function VerticalBarChart() {
+function LineChart() {
   const [verticalData, setVerticalData] = useState({
     labels: [],
     datasets: [],
@@ -186,18 +182,186 @@ function VerticalBarChart() {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: "bottom",
       },
       title: {
         display: true,
-        text: "Chart.js Line Chart",
+        text: "일일 매출 변화",
+        padding: {
+          top: 0,
+        },
       },
     },
   };
 
   return (
     <Card style={{ width: 500, height: 250 }}>
-      <Bar options={options} data={verticalData} />
+      <Line options={options} data={verticalData} />
+    </Card>
+  );
+}
+
+function PieChart() {
+  const [verticalData, setVerticalData] = useState({
+    labels: [],
+    datasets: [],
+  });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getVertical(setVerticalData);
+    setLoading(false);
+  }, []);
+
+  const options = {
+    // 비율유지 제외 옵션
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "right",
+      },
+      title: {
+        display: false,
+        text: "추천 수",
+        position: "bottom",
+        padding: {
+          top: 120,
+        },
+      },
+    },
+  };
+
+  const data = {
+    labels: [
+      "아메리카노",
+      "레몬에이드",
+      "텀블러",
+      "카페라떼",
+      "오렌지주스",
+      "사과주스",
+      "요쿠르트",
+      "짜장면",
+    ],
+    datasets: [
+      {
+        label: "추천 수",
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return (
+    <Card style={{ width: 500, height: 250 }}>
+      <div style={{ width: 400, height: 200 }}>
+        <Pie data={data} options={options} />
+      </div>
+    </Card>
+  );
+}
+
+// 각 메뉴 아이템의 판매 수량을 비교하기 좋다
+function HorizontalChart() {
+  const [revenueData, setRevenueData] = useState({ labels: [], datasets: [] });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getRevenue(setRevenueData);
+    setLoading(false);
+  }, []);
+  console.log("revenueData", revenueData);
+  const options = {
+    indexAxis: "y",
+    elements: {
+      bar: {
+        borderWidth: 2,
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "right",
+      },
+      title: {
+        display: true,
+        text: "판매실적",
+        position: "top",
+        padding: {
+          top: 0,
+          bottom: 10,
+        },
+      },
+    },
+  };
+
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+  ];
+
+  const dataset1 = [
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+  ];
+  const dataset2 = [
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+    Math.random() * 1000,
+  ];
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "A상품",
+        data: dataset1,
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+      {
+        label: "B상품",
+        data: dataset2,
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+
+  return (
+    <Card style={{ width: 500, height: 250 }}>
+      <Bar options={options} data={data} />
     </Card>
   );
 }
