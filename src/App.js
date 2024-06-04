@@ -7,8 +7,10 @@ import SideMenu from "./components/SideMenu";
 
 function App() {
   return (
+    // 이 부분을 레이아웃으로
     <div className="App">
       <AppHeader />
+      {/* 이 부분을 SideMenu와 PageContent 둘다 css 적용 */}
       <div className="SideMenuAndPageContent">
         <SideMenu />
         <PageContent />
