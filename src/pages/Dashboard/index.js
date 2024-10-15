@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Space, Typography, Card, Statistic, Table } from "antd";
 import {
   DollarOutlined,
   ShoppingCartOutlined,
   ShoppingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { Card, Layout, Space, Statistic, Table, Typography } from "antd";
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 import {
   getDashBoardOrders,
   getDashboardCustomers,
@@ -14,16 +24,6 @@ import {
   getOrders,
   getRevenue,
 } from "../../api";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 
 ChartJS.register(
   CategoryScale,

@@ -1,23 +1,16 @@
-import { Space } from "antd/es";
+import { ProConfigProvider } from "@ant-design/pro-components";
+import React from "react";
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
-import AppFooter from "./components/AppFooter";
-import AppHeader from "./components/AppHeader";
-import PageContent from "./components/PageContent";
-import SideMenu from "./components/SideMenu";
+import rootRouter from "./router/rootRouter";
+import { Layout } from "antd";
 
-function App() {
-  return (
-    // 이 부분을 레이아웃으로
-    <div className="App">
-      <AppHeader />
-      {/* 이 부분을 SideMenu와 PageContent 둘다 css 적용 */}
-      <div className="SideMenuAndPageContent">
-        <SideMenu />
-        <PageContent />
-      </div>
-      <AppFooter />
-    </div>
-  );
-}
+const App = () => (
+  <ProConfigProvider dark>
+    <Layout>
+      <RouterProvider router={rootRouter} />
+    </Layout>
+  </ProConfigProvider>
+);
 
 export default App;

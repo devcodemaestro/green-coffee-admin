@@ -11,7 +11,7 @@ function Orders() {
     getOrders(setDataSource);
     setLoading(false);
   }, []);
-  console.log("dataSoure", dataSoure);
+  // console.log("dataSoure", dataSoure);
   return (
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>주문관리</Typography.Title>
