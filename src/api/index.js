@@ -13,7 +13,7 @@ export const getOrders = async (setDataSource) => {
 export const getHeaderOrders = async (setOrders) => {
   try {
     const res = await axios.get("https://dummyjson.com/products");
-    // console.log("getHeaderOrders", res.data.products);
+    console.log("getHeaderOrders", res.data.products);
     // 종 표기 위에 갯수가 뜸.
     return setOrders(res.data.products);
   } catch (err) {
@@ -84,23 +84,8 @@ export const getComments = async (setComments) => {
 
 export const getVertical = async (setVerticalData) => {
   try {
-    const res = await axios.get("https://dummyjson.com/carts");
-    const labels = res.data.carts.map((cart) => `고객 ${cart.userId}`);
-    const data = res.data.carts.map((cart) => cart.discountedTotal);
-
-    const dataSource = {
-      labels,
-      datasets: [
-        {
-          label: "데이터1",
-          data: data,
-          backgroundColor: "rgb(255, 99, 132)",
-          stack: "Stack 0",
-        },
-      ],
-    };
-
-    setVerticalData(dataSource);
+    const res = await axios.get("https://dummyjson.com/comments");
+    setVerticalData(res.data);
   } catch (err) {
     console.error("다음과 같은 에러가 발생했습니다 :", err);
   }
