@@ -4,7 +4,7 @@ import {
   ShoppingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Card, Layout, Space, Statistic, Table, Typography } from "antd";
+import { Card, Space, Statistic, Table, Typography } from "antd";
 import {
   BarElement,
   CategoryScale,
@@ -45,7 +45,7 @@ const Dashboard = () => {
     getDashboardRevenue(setRevenue);
     getDashboardInventory(setInventory);
     getDashboardCustomers(setCustomers);
-  }, []);
+  }, [orders, inventory, customers, revenue]);
 
   return (
     <Space size={20} direction="vertical">
@@ -156,12 +156,12 @@ const RecentOrders = () => {
 
 const DashboardChart = () => {
   const [revenueData, setRevenueData] = useState({ labels: [], datasets: [] });
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     getRevenue(setRevenueData);
-    setLoading(false);
+    // setLoading(false);
   }, []);
 
   const options = {

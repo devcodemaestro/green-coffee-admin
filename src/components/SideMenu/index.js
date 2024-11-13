@@ -1,19 +1,17 @@
 import {
   AppstoreOutlined,
   LineChartOutlined,
+  LogoutOutlined,
   ShopOutlined,
   ShoppingCartOutlined,
-  UserOutlined,
-  LogoutOutlined,
 } from "@ant-design/icons";
 import { Menu, message } from "antd";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { AuthStateAtom } from "../../recoil/atoms/AuthState";
-import { postLogout } from "../../api/admin";
 import Sider from "antd/es/layout/Sider";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+// import { postLogout } from "../../api/admin";
+import { AuthStateAtom } from "../../recoil/atoms/AuthState";
 
 const SideMenu = () => {
   const location = useLocation();
@@ -66,8 +64,9 @@ const SideMenu = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await postLogout();
-      if (response.result === 200) {
+      // const response = await postLogout();
+      if (true) {
+        // if (response.result === 200) {
         setAuthState({
           loginstate: "N",
           token: "",
@@ -85,8 +84,8 @@ const SideMenu = () => {
   };
 
   return (
-    <Sider>
-      <div className="SideMenu">
+    <div className="SideMenu">
+      <Sider>
         <Menu
           theme="dark"
           className="SideMenuVertical"
@@ -99,8 +98,8 @@ const SideMenu = () => {
           selectedKeys={[selectedKeys]}
           items={getRoleBasedItems()}
         />
-      </div>
-    </Sider>
+      </Sider>
+    </div>
   );
 };
 
