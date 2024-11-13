@@ -7,6 +7,7 @@ import { UserStateAtom } from "../recoil/atoms/UserState";
 
 const NoLayout = () => {
   const { pathname } = useLocation();
+
   const resetAuthState = useResetRecoilState(AuthStateAtom);
   const resetUserState = useResetRecoilState(UserStateAtom);
 
@@ -17,6 +18,7 @@ const NoLayout = () => {
       resetAuthState();
       resetUserState();
     }
+    // eslint-disable-next-line
   }, [pathname]);
 
   return <Outlet />;

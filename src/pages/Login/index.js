@@ -119,7 +119,7 @@ function Login() {
           overflow: "hidden",
         }}
       >
-        <video
+        {/* <video
           autoPlay
           muted
           loop
@@ -134,7 +134,7 @@ function Login() {
             src={`${process.env.PUBLIC_URL}/assets/coffee.mp4`}
             type="video/mp4"
           />
-        </video>
+        </video> */}
         <div
           style={{
             backgroundColor: "rgba(0, 0, 0,0.65)",

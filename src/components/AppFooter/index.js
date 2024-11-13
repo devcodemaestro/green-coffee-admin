@@ -1,10 +1,11 @@
 import { Typography } from "antd/es";
-import { Footer } from "antd/es/layout/layout";
+import { Header } from "antd/es/layout/layout";
+// import { Footer } from "antd/es/layout/layout";
 import React from "react";
 
 const AppFooter = () => {
   return (
-    <Footer theme="dark">
+    <Header theme="dark">
       <div className="AppFooter">
         {/* 해외 전화번호 체계에서는 0 대신 +를 사용. +82는 대한민국 국가번호. 휴대폰 010의 경우 +82 10으로 시작 */}
         <Typography.Link href="tel:+82535721005">
@@ -19,7 +20,7 @@ const AppFooter = () => {
           이용 약관
         </Typography.Link>
       </div>
-    </Footer>
+    </Header>
   );
 };
 

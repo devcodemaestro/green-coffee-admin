@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { getCookie, removeCookie, setCookie } from "../api/cookie";
 import api from "../api/admin";
+import { getCookie, removeCookie, setCookie } from "../api/cookie";
 
 let isRefresh = false;
 let failedQueue = [];
@@ -43,7 +43,7 @@ export const Interceptor = ({ children }) => {
       const status = response ? response.status : null;
       const req = error.config;
       const refreshToken = getCookie("refreshToken");
-      const token = getCookie("token");
+      // const token = getCookie("token");
 
       if (status === 400 && refreshToken) {
         // if (!token && refreshToken) {

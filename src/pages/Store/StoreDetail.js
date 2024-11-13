@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDetailStore } from "../../api/superadmin";
-import { Descriptions, Spin } from "antd";
+import { Descriptions } from "antd";
+// import { Spin } from "antd";
 
 function StoreDetail() {
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [detailStore, setDetailStore] = useState(null);
 
   useEffect(() => {
     getDetailStore(setDetailStore);
   }, [id]);
 
-  console.log(detailStore);
+  // console.log(detailStore);
 
-  if (loading) {
-    return <Spin />;
-  }
+  // if (loading) {
+  //   return <Spin />;
+  // }
 
   if (!detailStore) {
     return <div>매장 정보를 불러올 수 없습니다.</div>;
